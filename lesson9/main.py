@@ -1,10 +1,16 @@
-from flask import Flask,render_template_string, request, jsonify
+from flask import Flask,render_template_string, request, jsonify, abort
 from google import genai
 from dotenv import load_dotenv
 import os
+from linebot import LineBotApi, WebhookHandler
+from linebot.exceptions import InvalidSignatureError
+from linebot.models import *
+
 load_dotenv()
 app = Flask(__name__)
 client = genai.Client(api_key=os.getenv("GENAI_API_KEY"))
+line_bot_api = LineBotApi(os.getenv("CHANNEL_ACCESS_TOKEN"))
+handler = WebhookHandler(os.getenv("CHANNEL_SECRET"))
 
 @app.route("/")
 def index():
